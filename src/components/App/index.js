@@ -1,14 +1,16 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import Dispatches from '../../store/dispatches';
-import { Container } from './styles';
+import { Container, Flex } from './styles';
+import Card from '../Card';
+import { FaNodeJs, FaPython } from 'react-icons/fa'
 
 function App() {
   const container = useSelector(state => state)
   const dispath = useDispatch()
 
   function addContainer() {
-    dispath(Dispatches.addContainer({ container: 'react', port: 8080, network: 'front' } ))
+    dispath(Dispatches.addContainer({ container: 'react', port: 8080, network: 'front' }))
   }
   return (
     <Container>
@@ -18,7 +20,16 @@ function App() {
         <p>{item.network}</p>
       </div>)}
       <button onClick={addContainer}>Novo</button>
-      <a href="assets/templates/node.txt" download="Dockerfile">Download Node Dockerfile</a>
+      <Flex>
+        <Card
+          icon={<FaNodeJs />}
+          url="assets/templates/node.txt"
+        />
+        <Card
+          icon={<FaPython />}
+          url="assets/templates/python.txt"
+        />
+      </Flex>
     </Container>
   );
 }

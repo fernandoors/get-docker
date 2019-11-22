@@ -9,6 +9,19 @@ export const Container = styled.div`
     flex-direction: column;
   }
 `
-export const Flex = styled.div`
-display: flex;
+
+export const Cards = styled.div`
+  height: 50px;
+  width: 80px
+  border: 1px solid;
+  border-radius: 20px;
+  color: ${colors.blue};
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  svg {
+    font-size: 32px;
+    margin-top: 10px;
+  }
+  
 `
