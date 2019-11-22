@@ -6,7 +6,6 @@ The platform get docker templates (Dockerfile and docker-compose)
 
 In the project directory, you can run:
 
-### `yarn`
 ### `yarn start`
 
 Runs the app in the development mode.<br />
