@@ -1,33 +1,46 @@
-import React, { useState } from 'react';
+import React, { useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
-import Dispatches from '../../store/dispatches';
+import dispatches from '../../store/docker/dispatches';
+
 import { Container } from './styles';
 import Form from '../Form'
+
 export default function ComposeForm() {
-  const [createContainer, setCreateContainer] = useState({ version: '3.0', nome: '', imagem: '', volumeOrigem: '', volumeDestino: '' })
-  const container = useSelector(state => state)
-  const dispath = useDispatch()
+  const docker = useSelector(state => state.docker)
+  const editDocker = !docker.editId
+    ? 0 : docker.container.findIndex(item => item.id === docker.editId)
+  const dispatch = useDispatch()
 
   function addContainer() {
-    dispath(Dispatches.addContainer(createContainer))
+    dispatch(dispatches.addContainer())
   }
-  function handleCreateContainer(input, key) {
-    createContainer[key] = input
-    setCreateContainer(createContainer)
+  const handleCreateContainer = useCallback((input, key, id) => {
+    return dispatch(dispatches.updateContainer(input, key, id))
+  }, [dispatch])
+  function handleDockerVersion(input) {
+    dispatch(dispatches.updateVersion(input.target.value))
   }
-  
+  function handleEdit(id) {
+    dispatch(dispatches.editContainer(id))
+  }
+  console.log(docker)
   return (
     <Container >
-        <span>Version</span>
-        <select value={createContainer.version} onChange={e => handleCreateContainer(e.target.value, 'version')}>
-          <option>3.0</option>
-          <option>3.5</option>
-          <option>3.7</option>
-        </select>
-        <span>Services</span>
-        <Form handleCreateContainer={handleCreateContainer} />
-        <button onClick={addContainer} >Novo compose</button>
-      {JSON.stringify(container)}
+      <span>Version</span>
+      <select value={docker.version} onChange={handleDockerVersion}>
+        <option>3.0</option>
+        <option>3.5</option>
+        <option>3.7</option>
+      </select>
+      <p>Services</p>
+      <Form onChange={handleCreateContainer} data={docker.container[editDocker]} />
+      <button onClick={addContainer} >Novo compose</button>
+      {docker.container.map(dock => (
+        <div key={dock.id}>
+          <label>{dock.nome}</label>
+          <button onClick={() => handleEdit(dock.id)}>Edit</button>
+        </div>
+      ))}
     </Container>
   );
 }

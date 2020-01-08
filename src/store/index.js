@@ -1,15 +1,9 @@
-import { createStore } from 'redux'
-import { ACTIONS } from './actions';
+import { combineReducers, createStore } from 'redux'
 
-function docker(state = ACTIONS.INITIAL_STATE, action) {
-  switch (action.type) {
-    case ACTIONS.ADD_CONTAINER:
-      return [...state, action.container]
-    default:
-      return state
-  }
-}
+import docker from './docker/reducers'
 
-const store = createStore(docker)
+const reducers = combineReducers({
+  docker
+})
 
-export default store
+export const store = createStore(reducers)
